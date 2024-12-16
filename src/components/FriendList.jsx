@@ -1,19 +1,25 @@
 import Button from "./Button";
 import "../style/style.css";
 
-const FriendList = ({ friends }) => {
+const FriendList = ({ friends, onSelectFriend, selectFriend }) => {
   return (
     <ul>
       {friends.map((friend) => (
-        <Friend friend={friend} key={friend.id} />
+        <Friend
+          friend={friend}
+          key={friend.id}
+          onSelectFriend={onSelectFriend}
+          selectFriend={selectFriend}
+        />
       ))}
     </ul>
   );
 };
 
-function Friend({ friend }) {
+function Friend({ friend, onSelectFriend, selectFriend }) {
+  const isSelected = selectFriend?.id === friend.id;
   return (
-    <li>
+    <li className={isSelected ? "selected" : ""}>
       <img src={friend.image} alt={friend.name} />
       <h3>{friend.name}</h3>
 
@@ -29,7 +35,9 @@ function Friend({ friend }) {
       )}
       {friend.balance === 0 && <p>You and {friend.name} are even</p>}
 
-      <Button>Select</Button>
+      <Button onClick={() => onSelectFriend(friend)}>
+        {isSelected ? "Close" : "Select"}
+      </Button>
     </li>
   );
 }
